@@ -32,11 +32,12 @@ resource "aws_dynamodb_table" "complementos" {
 
 resource "aws_s3_bucket" "archivos_eventos" {
   bucket = "archivos-eventos"
-}
-
-resource "aws_s3_bucket_acl" "archivos_eventos_acl" {
-  bucket = aws_s3_bucket.archivos_eventos.bucket
   acl    = "private"
+
+  tags = {
+    Name        = "archivos-eventos"
+    Environment = "Dev"
+  }
 }
 
 data "aws_caller_identity" "current" {}
