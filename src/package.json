@@ -1,0 +1,17 @@
+{
+    "name": "evento-microservice",
+    "version": "1.0.0",
+    "description": "Microservice for managing events",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+      "aws-sdk": "^2.1000.0",
+      "uuid": "^8.3.2"
+    },
+    "devDependencies": {},
+    "author": "",
+    "license": "ISC"
+  }
+  

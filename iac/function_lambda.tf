@@ -36,7 +36,9 @@ resource "aws_iam_role_policy" "lambda_s3_policy" {
           "s3:ListBucket",
           "dynamodb:PutItem",
           "dynamodb:GetItem",
-          "dynamodb:Query"
+          "dynamodb:Query",
+          "dynamodb:DeleteItem",
+          "dynamodb:UpdateItem"
         ],
         "Resource": [
           "arn:aws:s3:::${aws_s3_bucket.archivos_eventos.bucket}/*",

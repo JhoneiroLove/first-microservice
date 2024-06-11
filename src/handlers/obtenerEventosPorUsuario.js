@@ -2,7 +2,15 @@ const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
-    const { usuarioId } = JSON.parse(event.body);
+    // Obtenemos usuarioId de los parámetros de consulta
+    const usuarioId = event.queryStringParameters && event.queryStringParameters.usuarioId;
+
+    if (!usuarioId) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: 'UsuarioId es requerido' }),
+        };
+    }
 
     const params = {
         TableName: process.env.EVENTOS_TABLE,

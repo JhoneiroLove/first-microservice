@@ -1,6 +1,5 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const s3 = new AWS.S3();
+const dynamodb = require('../utils/dynamodb');
+const { uploadFile } = require('../utils/s3');
 const { v4: uuidv4 } = require('uuid');
 
 exports.handler = async (event) => {
@@ -13,15 +12,9 @@ exports.handler = async (event) => {
 
     if (archivo) {
         const buffer = Buffer.from(archivo, 'base64'); // archivo como base64
-        const s3Params = {
-            Bucket: process.env.S3_BUCKET,
-            Key: `eventos/${eventoId}/${uuidv4()}`, // Carpeta por evento y nombre único
-            Body: buffer,
-            ContentEncoding: 'base64', // Indicamos que el contenido está en base64
-            ContentType: 'application/octet-stream' // Tipo genérico
-        };
-        const s3Result = await s3.upload(s3Params).promise();
-        archivoUrl = s3Result.Location;
+        const key = `eventos/${eventoId}/${uuidv4()}`; // Carpeta por evento y nombre único
+        await uploadFile(process.env.S3_BUCKET, key, buffer);
+        archivoUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`;
     }
 
     const eventoParams = {
