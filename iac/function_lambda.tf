@@ -38,13 +38,15 @@ resource "aws_iam_role_policy" "lambda_s3_policy" {
           "dynamodb:GetItem",
           "dynamodb:Query",
           "dynamodb:DeleteItem",
-          "dynamodb:UpdateItem"
+          "dynamodb:UpdateItem",
+          "execute-api:Invoke"
         ],
         "Resource": [
           "arn:aws:s3:::${aws_s3_bucket.archivos_eventos.bucket}/*",
           "arn:aws:s3:::${aws_s3_bucket.archivos_eventos.bucket}",
           "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_dynamodb_table.eventos.name}",
-          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_dynamodb_table.complementos.name}"
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_dynamodb_table.complementos.name}",
+          "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:*/*"
         ]
       }
     ]
