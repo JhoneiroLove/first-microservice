@@ -17,6 +17,23 @@ resource "aws_dynamodb_table" "eventos" {
     name = "ID"
     type = "S"
   }
+
+  attribute {
+    name = "UsuarioId"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name            = "UsuarioIndex"
+    hash_key        = "UsuarioId"
+    projection_type = "ALL"
+  }
+
+  tags = {
+    department   = "Innovation"
+    environment  = "development"
+    owner        = "jmaquis"
+  }
 }
 
 resource "aws_dynamodb_table" "complementos" {
@@ -44,6 +61,5 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
-
 
 data "aws_caller_identity" "current" {}

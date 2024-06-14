@@ -13,3 +13,7 @@ output "eliminar_evento_lambda" {
 output "actualizar_fecha_evento_lambda" {
   value = aws_lambda_function.actualizar_fecha_evento.arn
 }
+
+output "api_gateway_url" {
+  value = "https://${aws_api_gateway_rest_api.evento_api.id}.execute-api.${var.aws_region}.amazonaws.com/prod"
+}
