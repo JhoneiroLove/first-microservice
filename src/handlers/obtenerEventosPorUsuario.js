@@ -5,6 +5,7 @@ exports.handler = async (event) => {
     console.log('Event:', JSON.stringify(event));
     
     const nombreMascota = event.queryStringParameters.nombreMascota;
+    console.log(event.headers)
 
     if (!nombreMascota) {
         return {
