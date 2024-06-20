@@ -4,14 +4,13 @@
     "description": "Microservice for managing events",
     "main": "index.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-      "aws-sdk": "^2.1000.0",
-      "uuid": "^8.3.2"
+        "aws-sdk": "^2.1000.0",
+        "jsonwebtoken": "^9.0.2",
+        "uuid": "^8.3.2"
     },
-    "devDependencies": {},
     "author": "",
     "license": "ISC"
-  }
-  
+}

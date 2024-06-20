@@ -1,9 +1,24 @@
 const dynamodb = require('../utils/dynamodb');
 const { uploadFile } = require('../utils/s3');
 const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
 
 exports.handler = async (event) => {
     console.log('Event:', JSON.stringify(event));
+
+    const token = event.headers.Authorization.replace("Bearer ", "");
+
+    let userId;
+    try {
+        const decoded = jwt.decode(token);
+        userId = decoded.userId.toString(); 
+    } catch (err) {
+        console.error('Error decoding token:', err);
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: 'Invalid token' })
+        };
+    }
 
     try {
         const {
@@ -58,6 +73,8 @@ exports.handler = async (event) => {
         const eventoParams = {
             TableName: process.env.EVENTOS_TABLE,
             Item: {
+                UserId: userId,
+                MascotaNombre: nombreMascota,
                 ID: eventoId,
                 Fecha: fecha,
                 Veterinaria: veterinaria,
@@ -67,7 +84,6 @@ exports.handler = async (event) => {
                 ArchivoUrl: archivoUrl,
                 ModificadoFecha: new Date().toISOString(),
                 Enabled: true,
-                MascotaNombre: nombreMascota,
                 TipoMascota: tipoMascota
             }
         };

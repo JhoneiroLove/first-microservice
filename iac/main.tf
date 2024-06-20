@@ -11,22 +11,24 @@ provider "aws" {
 resource "aws_dynamodb_table" "eventos" {
   name           = "eventos"
   billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "ID"
+  hash_key       = "UserId"
+  range_key      = "MascotaNombre"
 
   attribute {
-    name = "ID"
+    name = "UserId"
     type = "S"
   }
 
   attribute {
-    name = "UsuarioId"
+    name = "MascotaNombre"
     type = "S"
   }
 
   global_secondary_index {
-    name            = "UsuarioIndex"
-    hash_key        = "UsuarioId"
-    projection_type = "ALL"
+    name               = "MascotaNombreIndex"
+    hash_key           = "MascotaNombre"
+    range_key          = "UserId"
+    projection_type    = "ALL"
   }
 
   tags = {

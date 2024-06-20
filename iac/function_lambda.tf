@@ -37,6 +37,7 @@ resource "aws_iam_role_policy" "lambda_dynamodb_policy" {
           "dynamodb:PutItem",
           "dynamodb:GetItem",
           "dynamodb:Query",
+          "dynamodb:Scan",
           "dynamodb:DeleteItem",
           "dynamodb:UpdateItem",
           "execute-api:Invoke"
@@ -45,7 +46,7 @@ resource "aws_iam_role_policy" "lambda_dynamodb_policy" {
           "arn:aws:s3:::${aws_s3_bucket.archivos_eventos.bucket}/*",
           "arn:aws:s3:::${aws_s3_bucket.archivos_eventos.bucket}",
           "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_dynamodb_table.eventos.name}",
-          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_dynamodb_table.eventos.name}/index/UsuarioIndex",
+          "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_dynamodb_table.eventos.name}/index/MascotaNombreIndex",
           "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/${aws_dynamodb_table.complementos.name}",
           "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:*/*"
         ]
