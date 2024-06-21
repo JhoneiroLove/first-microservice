@@ -53,6 +53,8 @@ resource "aws_s3_bucket" "archivos_eventos" {
   bucket = "archivos-eventos"
   acl    = "private"
 
+  force_destroy = true
+
   tags = {
     Name        = "archivos-eventos"
     Environment = "Dev"

@@ -34,6 +34,8 @@ resource "aws_iam_role_policy" "lambda_dynamodb_policy" {
           "s3:PutObject",
           "s3:GetObject",
           "s3:ListBucket",
+          "s3:DeleteObject",
+          "s3:DeleteBucket",
           "dynamodb:PutItem",
           "dynamodb:GetItem",
           "dynamodb:Query",
@@ -102,6 +104,7 @@ resource "aws_lambda_function" "eliminar_evento" {
   environment {
     variables = {
       EVENTOS_TABLE = aws_dynamodb_table.eventos.name
+      S3_BUCKET     = aws_s3_bucket.archivos_eventos.bucket
     }
   }
 }
