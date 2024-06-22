@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 exports.handler = async (event) => {
     console.log('Event:', JSON.stringify(event));
 
-    // Obtener y decodificar el token JWT
     const token = event.headers.Authorization.replace("Bearer ", "");
     let userId;
     try {
@@ -19,7 +18,6 @@ exports.handler = async (event) => {
         };
     }
 
-    // Obtener el eventoId del cuerpo de la solicitud
     let eventoId;
     try {
         const body = JSON.parse(event.body);
@@ -39,7 +37,6 @@ exports.handler = async (event) => {
         };
     }
 
-    // Parámetros para eliminar el evento de DynamoDB
     const params = {
         TableName: process.env.EVENTOS_TABLE,
         Key: {
