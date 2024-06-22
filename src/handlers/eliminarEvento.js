@@ -4,14 +4,13 @@ const jwt = require('jsonwebtoken');
 
 exports.handler = async (event) => {
     console.log('Event:', JSON.stringify(event));
-    
-    const token = event.headers.Authorization.replace("Bearer ", "");
 
+    // Obtener y decodificar el token JWT
+    const token = event.headers.Authorization.replace("Bearer ", "");
     let userId;
     try {
         const decoded = jwt.decode(token);
-        userId = decoded.userId.toString(); 
-        console.log('Decoded userId:', userId);
+        userId = decoded.userId.toString();
     } catch (err) {
         console.error('Error decoding token:', err);
         return {
@@ -20,48 +19,47 @@ exports.handler = async (event) => {
         };
     }
 
-    let mascotaNombre;
+    // Obtener el eventoId del cuerpo de la solicitud
+    let eventoId;
     try {
         const body = JSON.parse(event.body);
-        mascotaNombre = body.mascotaNombre;
-        console.log('Parsed mascotaNombre:', mascotaNombre);
+        eventoId = body.eventoId;
     } catch (err) {
-        console.error('Error parsing event body:', err);
+        console.error('Error parsing body:', err);
         return {
             statusCode: 400,
             body: JSON.stringify({ error: 'Invalid request body' })
         };
     }
 
-    if (!mascotaNombre) {
+    if (!eventoId) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ error: 'mascotaNombre es requerido' })
+            body: JSON.stringify({ error: 'eventoId is required' })
         };
     }
 
+    // Parámetros para eliminar el evento de DynamoDB
     const params = {
-        TableName: 'eventos', 
-        Key: { 
-            UserId: userId, 
-            MascotaNombre: mascotaNombre 
+        TableName: process.env.EVENTOS_TABLE,
+        Key: {
+            UserId: userId,
+            EventoId: eventoId
         }
     };
 
-    console.log('Params:', JSON.stringify(params)); 
-
     try {
         await dynamodb.delete(params).promise();
-        console.log('Evento eliminado exitosamente');
+        console.log('Evento eliminado de DynamoDB');
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: 'Evento eliminado' }),
+            body: JSON.stringify({ message: 'Evento eliminado exitosamente' })
         };
     } catch (error) {
-        console.error('Error eliminando evento:', error);
+        console.error('Error al eliminar el evento de DynamoDB:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Error al eliminar el evento', error }),
+            body: JSON.stringify({ error: 'Error al eliminar el evento' })
         };
     }
 };

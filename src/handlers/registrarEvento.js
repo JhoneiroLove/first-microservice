@@ -74,8 +74,8 @@ exports.handler = async (event) => {
             TableName: process.env.EVENTOS_TABLE,
             Item: {
                 UserId: userId,
+                EventoId: eventoId, 
                 MascotaNombre: nombreMascota,
-                ID: eventoId,
                 Fecha: fecha,
                 Veterinaria: veterinaria,
                 Descripcion: descripcion,

@@ -74,7 +74,11 @@ resource "aws_api_gateway_method" "eliminar_evento" {
   resource_id   = aws_api_gateway_resource.evento.id
   http_method   = "DELETE"
   authorization = "NONE"
+  request_parameters = {
+    "method.request.path.eventoId" = true
+  }
 }
+
 
 resource "aws_api_gateway_integration" "eliminar_evento" {
   rest_api_id             = aws_api_gateway_rest_api.evento_api.id
@@ -83,6 +87,9 @@ resource "aws_api_gateway_integration" "eliminar_evento" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.eliminar_evento.invoke_arn
+  request_parameters = {
+    "integration.request.path.eventoId" = "method.request.path.eventoId"
+  }
 }
 
 resource "aws_api_gateway_method_response" "eliminar_evento_200" {

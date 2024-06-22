@@ -12,10 +12,15 @@ resource "aws_dynamodb_table" "eventos" {
   name           = "eventos"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "UserId"
-  range_key      = "MascotaNombre"
+  range_key      = "EventoId"
 
   attribute {
     name = "UserId"
+    type = "S"
+  }
+
+  attribute {
+    name = "EventoId"
     type = "S"
   }
 
