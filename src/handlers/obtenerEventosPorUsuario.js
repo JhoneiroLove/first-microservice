@@ -40,6 +40,7 @@ exports.handler = async (event) => {
     try {
         const data = await dynamodb.query(params).promise();
         const items = data.Items.map(item => ({
+            eventoId: item.EventoId,
             fecha: item.Fecha,
             veterinaria: item.Veterinaria,
             descripcion: item.Descripcion,
