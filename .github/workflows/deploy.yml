@@ -10,37 +10,46 @@ jobs:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
 
-    steps:
-      - name: 'Checkout the repository'
-        uses: actions/checkout@v2
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-2
+      TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      TF_VAR_aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: 'Setup Node.js'
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18.x'
 
-      - name: 'Install npm dependencies'
+      - name: Install npm dependencies
         run: npm install
         working-directory: ./src
 
-      - name: 'Create bin directory if it does not exist'
+      - name: Create bin directory if it does not exist
         run: mkdir -p iac/bin
 
-      - name: 'Archive Lambda function'
+      - name: Archive Lambda function
         run: zip -r ../iac/bin/lambda_function_payload.zip *
         working-directory: ./src
 
-      - name: 'Setup Terraform'
-        uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.8.5
 
-      - name: 'Terraform Init'
+      - name: Terraform Init
         run: terraform init
         working-directory: ./iac
 
-      - name: 'Terraform Apply'
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./iac
+
+      - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./iac
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
