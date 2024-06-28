@@ -1,4 +1,4 @@
-name: Deploy to AWS for Terraform CI/CD
+name: Deploy to AWS for Terraform
 
 on:
   push:
@@ -23,9 +23,12 @@ jobs:
         run: npm install
         working-directory: ./src
 
+      - name: 'Create bin directory if it does not exist'
+        run: mkdir -p ../iac/bin
+        working-directory: ./src
+
       - name: 'Archive Lambda function'
-        run: |
-          zip -r ../iac/bin/lambda_function_payload.zip *
+        run: zip -r ../iac/bin/lambda_function_payload.zip *
         working-directory: ./src
 
       - name: 'Setup Terraform'
