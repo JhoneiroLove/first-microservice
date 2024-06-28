@@ -1,4 +1,4 @@
-name: Deploy to AWS for Terraform
+name: Deploy to AWS for Terraform CI/CD
 
 on:
   push:
