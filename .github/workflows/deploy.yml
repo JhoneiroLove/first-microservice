@@ -1,4 +1,4 @@
-name: Deploy to AWS for Terraform
+name: Deploy to AWS
 
 on:
   push:
@@ -24,8 +24,7 @@ jobs:
         working-directory: ./src
 
       - name: 'Create bin directory if it does not exist'
-        run: mkdir -p ../iac/bin
-        working-directory: ./src
+        run: mkdir -p iac/bin
 
       - name: 'Archive Lambda function'
         run: zip -r ../iac/bin/lambda_function_payload.zip *
